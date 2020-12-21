@@ -8,9 +8,9 @@ const InputDataDecoder = require("ethereum-input-data-decoder");
 //==============================web3
 const Web3 = require("web3");
 const Tx = require("ethereumjs-tx");
-const evn = require("./evn.js");
+const env = require("./env.js");
 
-const web3ProviderURL = evn.web3ProviderURL;
+const web3ProviderURL = env.web3ProviderURL;
 var web3;
 var abiERC20 = require("./abi/standard/ERC20.json");
 var data;

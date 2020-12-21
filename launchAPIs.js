@@ -8,6 +8,7 @@ const AbiDecoder = require('abi-decoder');
 const fs = require('fs');
 const Web3 = require("web3");
 const web3ProviderURL = env.web3ProviderURL;
+const hostPort = env.hostPort;
 const abiFolder = 'abi';
 var web3;
 
@@ -143,7 +144,7 @@ app.post("/addABI", async function (req, res){
 
 
 
-var server = app.listen(8081, function () {
+var server = app.listen(hostPort, function () {
    var host = server.address().address
    var port = server.address().port
 

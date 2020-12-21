@@ -8,24 +8,19 @@ const Contract3 = artifacts.require("./Contract3.sol"); // ***to be updated
 const ContractsToExplorer = [Contract1, Contract2, Contract3];
 
 module.exports = function(deployer) {
-
      migrateABI();
-
 }
 
 async function migrateABI(){
 
-
     try{
+        const abis = [];
 
-      const abis = [];
+        for(var i = 0; i < ContractsToExplorer.length; i++){
+            abis.push(await createABIInput(ContractsToExplorer[i]));
+        }
 
-      for(var i = 0; i < ContractsToExplorer.length; i++){
-          abis.push(await createABIInput(ContractsToExplorer[i]));
-      }
-
-      await axios.post(privateExplorerURL + "/addABI", abis)
-
+        await axios.post(privateExplorerURL + "/addABI", abis)
 
     }catch(e){
         console.log("error! Please ensure the private block explorer server running!")
@@ -33,8 +28,8 @@ async function migrateABI(){
 }
 
 async function createABIInput(Contract){
-        return    {
-                    address: (await Contract.deployed()).address,
-                    abi: {contractName: Contract.contractName, abi: Contract.abi}
-                  }
+        return {
+                  address: (await Contract.deployed()).address,
+                  abi: {contractName: Contract.contractName, abi: Contract.abi}
+               }
 }
