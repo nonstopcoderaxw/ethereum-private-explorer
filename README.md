@@ -23,7 +23,7 @@ git clone https://github.com/AlexTheCodeMan/ethereumPrivateBlockExplorer.git
 Add an "env.js" at root directory like below.
 ```javascript
 const etherscanApiKey = "Your etherscan api key";
-const web3ProviderURL = "Your rpc location";
+const web3ProviderURL = "http://127.0.0.1:8545"; //update this if your rpc is in a different location
 const hostPort = "8081"; //update this if port 8081 has been used
 
 module.exports ={
