@@ -1,6 +1,6 @@
 
-const etherscanApiKey = "T69KANUMP7JM9VPKUZUXTJCTYTGRTWFAKA";
-const web3ProviderURL = "http://127.0.0.1:8545"
+const etherscanApiKey = "etherscanApiKey";
+const web3ProviderURL = "web3ProviderURL";
 
 
 module.exports ={
