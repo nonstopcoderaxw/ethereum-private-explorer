@@ -1,0 +1,44 @@
+<table class="table table-striped table-responsive-md">
+  <thead>
+    <tr>
+      <th>Address</th>
+      <th>Balance</th>
+      <th>ERC20 Tokens</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each this}}
+    <tr>
+      <td>
+        <span class="addressRow">
+          <a class="nav-link" href="/account.html#{{account}}" target="_blank">{{account}}</a>
+          <a href="#"><i class="fa fa-clone aCopyValue" aria-hidden="true" data-copy="{{account}}"></i></a>
+        </span>
+      </td>
+      <td>
+        <span class="nav-link noPaddingLeft">{{balance}} Ether</span>
+      </td>
+      <td>
+      {{#ifNotEquals erc20s.length 0}}
+      <a class="nav-link dropdown-toggle cViewTokens" href="https://designrevision.com" id="navbarDropdownMenuLink" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Click to view ({{erc20s.length}})
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        {{#each erc20s}}
+        <a class="dropdown-item tDropDownItemLink" href="#">
+          <ul class="tDropDownItem">
+            <li>{{name}}</li>
+            <li class="cTokenBalanceSub"><sub>{{balance}} {{symbol}}</sub>
+            </li>
+          </ul>
+        </a>
+        {{/each}}
+      </div>
+      {{/ifNotEquals}}
+    </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

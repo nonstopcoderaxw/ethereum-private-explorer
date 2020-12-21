@@ -1,0 +1,86 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head id="tHeader">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Private Ethereum Block Explorer</title>
+  <meta name="description" content="Private Ethereum Block Explorer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/shards.css?v=3.0.0">
+  <link rel="stylesheet" href="css/cCss.css">
+  <link rel="icon" href="./images/jing.fm-pink-floyd-clipart-2220126.png">
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+</head>
+
+<body>
+  <!--
+  <div class="loader">
+    <div class="page-loader"></div>
+  </div>
+  -->
+
+  <div id="tNav"></div>
+
+
+      <!-- Accounts -->
+      <div id="accounts" class="container mb-5 cTable">
+        <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+          <h3 class="mb-4">Accounts</h3>
+          <p>Accounts shown below only belong to the private Ethereum testnet. All other addresses in the mainnet can be searched on the search bar.</p>
+        </div>
+
+        <div id="accountsTable" class="example col-md-10 ml-auto mr-auto">
+
+        </div>
+      </div>
+
+        <!-- Contract -->
+        <div id="contracts" class="container mb-5 cTable">
+            <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+              <h3 class="mb-4">Contracts</h3>
+              <p>Contracts shown below only belong to the private Ethereum testnet. All other addresses in the mainnet can be searched on the search bar.</p>
+            </div>
+
+            <div id="contractsTable" class="example col-md-10 ml-auto mr-auto">
+
+            </div>
+        </div>
+
+
+      <!-- Transactions -->
+      <div id="transactions" class="container mb-5 cTable">
+            <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+              <h3 class="mb-4">Transactions</h3>
+              <p>Transactions shown below only belong to the private Ethereum testnet. All other transactions in the mainnet can be searched on the search bar.</p>
+            </div>
+
+            <div id="txnTable" class="example col-md-10 ml-auto mr-auto">
+
+            </div>
+        </div>
+
+
+        <!-- Blocks -->
+        <div id="blocks" class="container mb-5 cTable">
+              <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+                <h3 class="mb-4">Blocks</h3>
+                <p>Blocks shown below only belong to the private Ethereum testnet. All other blocks in the mainnet can be searched on the search bar.</p>
+              </div>
+
+              <div id="blockTable" class="example col-md-10 ml-auto mr-auto">
+
+              </div>
+          </div>
+
+  <!-- JavaScript -->
+
+  <script type="module" src="js/pageJS/index.js"></script>
+</body>
+
+</html>

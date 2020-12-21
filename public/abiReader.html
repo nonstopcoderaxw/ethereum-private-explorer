@@ -1,0 +1,149 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Private Ethereum Block Explorer</title>
+  <meta name="description" content="Private Ethereum Block Explorer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/shards.min.css?v=3.0.0">
+  <link rel="stylesheet" href="css/cCss.css">
+  <link rel="icon" href="./images/jing.fm-pink-floyd-clipart-2220126.png">
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+
+</head>
+
+<body>
+  <!--
+  <div class="loader">
+    <div class="page-loader"></div>
+  </div>
+  -->
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4">
+    <img src="./images/jing.fm-pink-floyd-clipart-2220126.png" alt="Example Navbar 1" class="mr-2" height="30">
+    <a class="navbar-brand" href="#">Private Ethereum Block Explorer</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown-2" aria-controls="navbarNavDropdown-2"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse mr-auto" id="navbarNavDropdown-2">
+      <ul class="navbar-nav mr-auto">
+
+      </ul>
+
+      <ul class="navbar-nav">
+        <li class="nav-item">
+
+          <div class="input-group with-addon-icon-left">
+            <input type="text" class="form-control cAddressInput" id="form1-name" placeholder="Search by Address, Tx Hash, Block Hash or Block Number" />
+              <span class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="fa fa-search"></i>
+                    </span>
+              </span>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- abi reader -->
+  <div id="abiReader" class="container mb-2" style="padding-bottom: 1px; max-width: 100%">
+
+        <div class="example col-md-12 ml-auto mr-auto">
+          <div class="row">
+            <div class="col-lg-5 col-md-6 col-sm-12 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title">Contract Address and ABI</p>
+                  <div class="row">
+                    <div class="col-md-12 mb-3">
+                      <label>Address</label>
+                      <input id="contractAddress" type="text" class="form-control" placeholder="0x..."></input>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                      <label>ABI</label>
+                      <textarea id="contractAbi" class="form-control abiTextArea" rows="3" placeholder="[]"></textarea>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-1 col-md-6 col-sm-12 mb-4">
+              <div class="card cABIActionPosition">
+                  <button type="button" class="btn btn-info cABIAction" id="generateAction">Generate</button>
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-4 sm-hidden">
+              <div class="card">
+                <div class="card-body">
+
+                  <div class="row">
+                    <div class="col-md-3 mb-3">
+                      <p class="card-title">Contract Functions</p>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <fieldset>
+                        <div class="custom-control custom-radio d-block noMargin">
+                          <input type="radio" id="abiReadFuncRadio" name="customRadio" class="custom-control-input abiRadio" checked="">
+                          <label class="custom-control-label" for="abiReadFuncRadio">Read</label>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <fieldset>
+                        <div class="custom-control custom-radio d-block noMargin">
+                          <input type="radio" id="abiWriteFuncRadio" name="customRadio" class="custom-control-input abiRadio">
+                          <label class="custom-control-label" for="abiWriteFuncRadio">Write</label>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+
+                  <div class="row" id="abiFunc">
+
+
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Accounts -->
+
+  <!-- JavaScript -->
+  <div id="fb-root"></div>
+
+
+  <div class="content-placeholder"></div>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+
+
+  <script src="js/abiReader.js"></script>
+</body>
+
+</html>

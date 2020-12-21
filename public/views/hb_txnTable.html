@@ -1,0 +1,56 @@
+<table class="table table-striped table-responsive-md">
+  <thead>
+    <tr>
+      <th class="cAddressGroup">Addresses</th>
+      <th>Block</th>
+      <th>Age</th>
+      <th>Value</th>
+      <th>Txn Fee</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each this}}
+    <tr>
+      <td>
+        <span>
+
+          <span class="addressRow">
+            <label>Txn:</label>
+            <a class="nav-link" href="/transaction.html#{{hash}}" target="_blank">{{hash}}</a>
+            <a href="#"><i class="fa fa-clone aCopyValue" aria-hidden="true" data-copy="{{hash}}"></i></a>
+          </span>
+
+          <span class="addressRow">
+            <label>From:</label>
+            <a class="nav-link" href="/account.html#{{from}}" target="_blank">{{from}}</a>
+            <a href="#"><i class="fa fa-clone aCopyValue" aria-hidden="true" data-copy="{{from}}"></i></a>
+          </span>
+
+          <span class="addressRow">
+            <label>To:</label>
+            <a class="nav-link" href="/account.html#{{to}}" target="_blank">{{to}}</a>
+            {{#ifNotEquals to null}}
+            <a href="#"><i class="fa fa-clone aCopyValue" aria-hidden="true" data-copy="{{to}}"></i></a>
+            {{/ifNotEquals}}
+          </span>
+
+        </span>
+      </td>
+      <td>
+          <a class="nav-link" href="/block.html#{{blockNumber}}" target="_blank">
+            {{blockNumber}}
+          </a>
+      </td>
+      <td>
+        {{age}}
+      </td>
+      <td>
+        {{valueInEther}} Ether
+      </td>
+      <td>
+        {{gas}}
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

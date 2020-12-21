@@ -1,0 +1,75 @@
+{{#each abi}}
+<div class="col-md-12 mb-3" id="abiFunc{{@index}}">
+  <div class="card">
+    <div class="card-body">
+        <div class="row">
+          <div class="col-md-10 mb-3">
+            <p class="card-title abiFuncName">{{name}}</p>
+          </div>
+          <div class="col-md-2 mb-3">
+            <fieldset>
+              <div class="custom-control custom-toggle custom-toggle-sm d-block my-2 cFloatRight">
+                <input type="checkbox" name="functionShowHide" class="custom-control-input">
+                <label class="custom-control-label" for="functionShowHide"></label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="row">
+          {{#each inputs}}
+          <div class="col-md-12 mb-3">
+            <label>{{name}}({{type}})</label>
+            <input type="text" class="form-control abiFuncInputValue" placeholder="{{name}}({{type}})" value="" required="">
+          </div>
+          {{/each}}
+          {{#if payable}}
+          <div class="col-md-12 mb-3">
+            <label>Ether value</label>
+            <input type="text" class="form-control abiFuncInputEtherValue" placeholder="0.01" value="" required="">
+          </div>
+          {{/if}}
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
+                <button type="button" class="btn btn-outline-light btn-pill abiFuncAction" data="{{@index}}">
+                {{#ifEquals ../callType "Read"}}
+                    Read
+                {{/ifEquals}}
+
+                {{#ifEquals ../callType "Write"}}
+                    Write
+                {{/ifEquals}}
+
+                </button>
+          </div>
+        </div>
+
+        <div class="separator">Returns</div>
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
+          </div>
+          {{#ifEquals ../callType "Read"}}
+          {{#each outputs}}
+          <div class="col-md-12 mb-3">
+            <small>{{name}}({{type}})</small>
+            <small class="abiFuncReturn"></small>
+          </div>
+          {{/each}}
+          {{/ifEquals}}
+
+          {{#ifEquals ../callType "Write"}}
+          <div class="col-md-12 mb-3">
+            <small>(Transaction Hash)</small>
+            <small class="abiFuncReturn"></small>
+          </div>
+          {{/ifEquals}}
+
+        </div>
+    </div>
+  </div>
+</div>
+{{/each}}

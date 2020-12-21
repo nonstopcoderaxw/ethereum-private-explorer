@@ -1,0 +1,26 @@
+<table class="table table-striped table-responsive-md">
+  <thead>
+    <tr>
+      <th>Block Number</th>
+      <th>Age</th>
+      <th>Number of Txn</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each this}}
+    <tr>
+      <td>
+        <a class="nav-link noPaddingLeft" href="/block.html#{{number}}" target="_blank">
+          {{number}}
+        </a>
+      </td>
+      <td>
+        {{age}}
+      </td>
+      <td>
+        {{count}}
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

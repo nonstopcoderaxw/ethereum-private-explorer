@@ -1,0 +1,120 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Private Ethereum Block Explorer</title>
+  <meta name="description" content="Private Ethereum Block Explorer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/shards.css?v=3.0.0">
+  <link rel="stylesheet" href="css/cCss.css">
+  <link rel="icon" href="./images/jing.fm-pink-floyd-clipart-2220126.png">
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+
+</head>
+
+<body>
+  <!--
+  <div class="loader">
+    <div class="page-loader"></div>
+  </div>
+  -->
+
+  <div id="tNav"></div>
+
+
+<center>
+  <ul class="nav nav-pills mb-3 cNav" id="pills-tab" role="tablist">
+    <li class="nav-item cNavItem">
+      <a class="nav-link active" id="tabOne" data-toggle="pill" href="#tabOneContent" role="tab" aria-controls="pills-home" aria-selected="true">Contract & Transactions</a>
+    </li>
+    <li class="nav-item cNavItem">
+      <a class="nav-link cNavRequireMetaMask" id="tabTwo" data-toggle="pill" href="#tabTwoContent" role="tab" aria-controls="pills-profile" aria-selected="false">Contract Interactions</a>
+    </li>
+  </ul>
+</center>
+<hr/>
+
+  <!-- tabs content-->
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="tabOneContent" role="tabpanel" aria-labelledby="pills-home-tab">
+
+          <div id="contractDetailView" class="container mb-5 cTable"></div>
+
+    </div>
+    <div class="tab-pane fade" id="tabTwoContent" role="tabpanel" aria-labelledby="pills-profile-tab">
+          <div id="interactions" class="container mb-5 cTable">
+            <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+              <h3 class="mb-4 cInlineDisplay">Contract Interactions</h3>
+              <p class="cFloateRight"><button type="button" class="btn btn-secondary aConnectWeb3">Connect to MetaMask</button></p>
+            </div>
+
+            <div class="card" style="width: 80%; margin-left: auto; margin-right: auto;">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="form-group col-md-12">
+                        <div class="custom-control custom-checkbox d-block my-2">
+                          <input type="checkbox" class="custom-control-input" id="isProxy">
+                          <label class="custom-control-label" for="isProxy">Is a proxy contract?</label>
+                        </div>
+                      </div>
+                      <div class="form-group col-md-4 cHide" id="implABISection">
+
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <br/>
+            <div class="card" style="width: 80%; margin-left: auto; margin-right: auto;">
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-md-3 mb-3">
+                    <p class="card-title">Contract Functions</p>
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <fieldset>
+                      <div class="custom-control custom-radio d-block noMargin">
+                        <input type="radio" id="abiReadFuncRadio" name="customRadio" class="custom-control-input abiRadio" checked="">
+                        <label class="custom-control-label" for="abiReadFuncRadio">Read</label>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <fieldset>
+                      <div class="custom-control custom-radio d-block noMargin">
+                        <input type="radio" id="abiWriteFuncRadio" name="customRadio" class="custom-control-input abiRadio">
+                        <label class="custom-control-label" for="abiWriteFuncRadio">Write</label>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+
+                <div class="row" id="abiFunc"></div>
+
+
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+
+
+
+
+
+      <!-- Contract Interactions -->
+
+
+  <!-- JavaScript -->
+
+  <script type="module" src="js/pageJS/contract.js"></script>
+</body>
+
+</html>

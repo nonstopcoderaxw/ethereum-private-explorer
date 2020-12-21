@@ -1,0 +1,208 @@
+
+<div id="txnBasicDetailSection" class="container mb-5 cTable">
+  <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+    <h3 class="mb-4">Transaction Basic Details</h3>
+  </div>
+  <center>
+    <table class="table table-striped table-responsive-md detailTable">
+      <tbody>
+        <tr>
+          <td>
+            <span>
+                Transaction Hash:
+            </span>
+          </td>
+          <td>
+                {{hash}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Status:
+            </span>
+          </td>
+          <td>
+                {{receiptWithDecodedLogs.status}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Block:
+            </span>
+          </td>
+          <td>
+              {{blockNumber}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Timestamp:
+            </span>
+          </td>
+          <td>
+              {{age}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Interacted With (To):
+            </span>
+          </td>
+          <td>
+              {{to}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Value:
+            </span>
+          </td>
+          <td>
+              {{value}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Transaction Fee:
+            </span>
+          </td>
+          <td>
+              {{gasFeeInETH}} ETH
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Gas Price:
+            </span>
+          </td>
+          <td>
+              {{gasPrice}} Gwei
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Gas Limit:
+            </span>
+          </td>
+          <td>
+                {{gas}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Gas Used by Transaction:
+            </span>
+          </td>
+          <td>
+                {{receiptWithDecodedLogs.gasUsed}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+                Nonce:
+            </span>
+          </td>
+          <td>
+                {{nonce}}
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </center>
+</div>
+
+
+<div id="eventLogsSection" class="container mb-5 cTable">
+
+    <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+      <h3 class="mb-4">Event Logs</h3>
+    </div>
+
+    <center>
+
+      <table class="table table-striped table-responsive-md detailTable">
+        <thead>
+          <tr>
+            <th>Index</th>
+            <th>Event Name</th>
+            <th>Address</th>
+            <th>Attributes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each receiptWithDecodedLogs.DecodedLogs}}
+          <tr>
+            <td>
+                {{@index}}
+            </td>
+            <td>
+                {{#ifEquals name null}}
+                    <i>Undecoded(Maybe a proxy)</i>
+                {{/ifEquals}}
+
+                {{#ifEquals name name}}
+                    <b>{{name}}</b>
+                {{/ifEquals}}
+            </td>
+            <td>
+                {{address}}
+            </td>
+            <td>
+                {{#each events}}
+                    <b>{{name}}</b>: {{value}}<br/>
+                {{/each}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </center>
+</div>
+
+<div id="ERC20TransferSection" class="container mb-5 cTable">
+  <div class="section-title col-lg-8 col-md-10 ml-auto mr-auto cSectionWidth">
+    <h3 class="mb-4">ERC20 Token Transfer</h3>
+  </div>
+
+  <center>
+    <table class="table table-striped table-responsive-md detailTable">
+      <thead>
+        <tr>
+          <th>Transfer Details</th>
+          <th>ERC20 Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each enhancedTransferEvents}}
+        <tr>
+          <td>
+              <b>From:</b> {{events.0.value}}<br/>
+              <b>To:</b> {{events.1.value}}<br/>
+              <b>Value:</b> {{events.2.amountText}}<br/>
+          </td>
+
+          <td>
+              <b>Address:</b> {{address}}<br/>
+              <b>Name:</b> {{ERC20.name}}<br/>
+              <b>Symbol:</b> {{ERC20.symbol}}<br/>
+              <b>Decimals:</b> {{ERC20.decimals}}<br/>
+
+
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </center>
+</div>
