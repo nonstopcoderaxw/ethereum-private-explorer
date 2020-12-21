@@ -14,7 +14,7 @@ A private block explorer designed and built for Ethereum Smart Contract developm
 
 ![alt text](https://github.com/AlexTheCodeMan/ethereumPrivateBlockExplorer/blob/main/readmeimgs/transactionPage.png?raw=true)
 
-# How to set up 
+# How to set it up 
 Clone the repo.
 ```
 git clone https://github.com/AlexTheCodeMan/ethereumPrivateBlockExplorer.git
