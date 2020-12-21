@@ -1,5 +1,5 @@
 //============================lib
-var evn = require("./evn.js");
+var env = require("./env.js");
 var express = require('express');
 var app = express();
 const axios = require('axios');
@@ -7,7 +7,7 @@ const InputDataDecoder = require("ethereum-input-data-decoder");
 const AbiDecoder = require('abi-decoder');
 const fs = require('fs');
 const Web3 = require("web3");
-const web3ProviderURL = evn.web3ProviderURL;
+const web3ProviderURL = env.web3ProviderURL;
 const abiFolder = 'abi';
 var web3;
 
@@ -389,7 +389,7 @@ async function findEtherscanABI(contractAddress){
     try{
         const etherscanGetAbiUrl = "https://api.etherscan.io/api?module=contract&action=getabi"
                                   + "&address=" + contractAddress
-                                  + "&apikey=" + evn.etherscanApiKey;
+                                  + "&apikey=" + env.etherscanApiKey;
         const etherscanABI = (await axios.get(etherscanGetAbiUrl)).data.result;
         return JSON.parse(etherscanABI);
     }catch(e){
