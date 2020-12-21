@@ -1,2 +1,4 @@
 node_modules/
 abi/*.JSON
+data.JSON
+evn.js

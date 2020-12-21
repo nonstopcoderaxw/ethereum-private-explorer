@@ -1,10 +1,10 @@
-//etherscan api key - this will be used to retrieve ABIs for contracts outside of the private blockchain
-const etherscanApiKey = null;
-//RPC location - https://127.0.0.1:8545
-const web3ProviderURL = null;
+
+const etherscanApiKey = "T69KANUMP7JM9VPKUZUXTJCTYTGRTWFAKA";
+
+const web3ProviderURL = "http://127.0.0.1:8545";
 
 
 
 module.exports ={
-        pvks,etherscanApiKey,web3ProviderURL
+        etherscanApiKey,web3ProviderURL
 }
