@@ -90,6 +90,18 @@ async function createABIInput(Contract){
 }
 
 ```
+Install the following npm packages under your Truffle project
+
+```javascript
+npm install axios
+npm install fs
+```
+
+Migrate your Truffle Contracts
+```javascript
+truffle migrate --reset
+```
+
 Access this block explorer via http://127.0.0.1:8081
 
 
