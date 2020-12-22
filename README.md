@@ -35,17 +35,6 @@ Install npm packages.
 ```
 npm install
 ```
-
-Reindex transactions - only require to run when first launching the block explorer or switching RPC location.
-```
-npm run resetBlocks
-```
-
-After reindexing is finished, exit from the last command and then run below to reindex new blocks and keep the process running.
-```
-npm run processBlocks
-```
-
 Open another terminal and then run below to launch the web UI of the block explorer.
 ```
 npm run runClient
@@ -100,6 +89,16 @@ npm install fs
 Migrate your Truffle Contracts
 ```javascript
 truffle migrate --reset
+```
+
+Reindex transactions - only require to run when first launching the block explorer or switching RPC location.
+```
+npm run resetBlocks
+```
+
+After reindexing is finished, exit from the last command and then run below to reindex new blocks and keep the process running.
+```
+npm run processBlocks
 ```
 
 Access this block explorer via http://127.0.0.1:8081
