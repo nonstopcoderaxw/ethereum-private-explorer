@@ -50,7 +50,7 @@ async function abiToFuncs(abi){
     for(var i = 0; i < abi.length; i++){
         const abiElement = abi[i];
         if(abiElement.type == "function"){
-            if(["nonpayable", "view"].includes(abiElement.stateMutability)){
+            if(["nonpayable", "view", "pure"].includes(abiElement.stateMutability)){
                 readFuncs.push(abiElement);
             }
         }

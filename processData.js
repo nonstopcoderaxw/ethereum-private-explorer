@@ -104,7 +104,6 @@ async function main(){
     }
 
 
-
     if(!dataFileContent){
         data = Object.assign({}, dataObj);
         data["accounts"] = await getAccounts();

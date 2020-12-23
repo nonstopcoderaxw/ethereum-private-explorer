@@ -8,10 +8,9 @@
     "ethereumjs-tx": "2.1.2",
     "axios": "0.21.0"
   },
-
   "scripts": {
-      "processBlocks": "node processData.js 2000 false",
-      "resetBlocks": "node processData.js 0 true",
-      "runClient": "node launchAPIs.js"
+    "processBlocks": "node processData.js 2000 false",
+    "resetBlocks": "node processData.js 0 true",
+    "runClient": "node launchAPIs.js"
   }
 }
