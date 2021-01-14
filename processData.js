@@ -404,6 +404,7 @@ async function getBalances(accounts){
 
 
 async function getFirstPrivateBlock(accounts){
+
     try{
       const currentBlockNumber = await web3.eth.getBlockNumber();
       for(var i = currentBlockNumber; currentBlockNumber > 0; i--){

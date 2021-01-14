@@ -21,6 +21,15 @@ app.get('/', function (req, res) {
    res.sendFile(__dirname + "/public/" + "index.html");
 })
 
+app.get('/forkedAtBlockNumber', async function (req, res) {
+
+
+   const data = JSON.parse(await fs.promises.readFile("data.JSON", 'utf8'));
+
+   res.setHeader('Content-Type', 'application/json');
+   res.end(JSON.stringify(data["firstPrivateBlock"] - 1));
+})
+
 app.get('/accountsWithDetails.json', async function (req, res) {
    var accounts = await getAccountsWithDetails();
    res.setHeader('Content-Type', 'application/json');
@@ -96,8 +105,8 @@ app.get('/getBlockWithTransactions.json', async function(req, res){
 
 app.get("/getABI.json", async function (req, res){
     const contractAddress = req.query.contractAddress;
-    const abiFilePath = abiFolder + "/" + contractAddress + ".JSON";
-    const abi = await fs.promises.readFile(abiFilePath, "utf8");
+    //const abiFilePath = abiFolder + "/" + contractAddress + ".JSON";
+    const abi = await findABI(contractAddress);
 
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(abi, null, 4));
@@ -395,6 +404,7 @@ async function findEtherscanABI(contractAddress){
         return JSON.parse(etherscanABI);
     }catch(e){
         console.log("ABI not found - error in findEtherscanABI - contractAddress: ", contractAddress);
+        return null;
     }
 }
 

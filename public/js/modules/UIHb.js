@@ -39,6 +39,11 @@ async function createBlockDetalView(data){
     $("#blockDetailView").html(html);
 }
 
+async function createAbiResultView(data){
+    var html = await createHBhtml(data, "./views/hb_abiResultRead.html");
+    return html;
+}
+
 async function createABIPicklist(data){
     var html = await createHBhtml(data, "./views/hb_abiPicklist.html");
     $("#implABISection").html(html);
@@ -77,5 +82,6 @@ export{
     createTemplateComponents,
     createAccountDetailView,
     createContractDetailView,
-    createHBhtml
+    createHBhtml,
+    createAbiResultView
 }

@@ -32,7 +32,7 @@ async function getContractWithDetailsByContract(contractAddress){
 }
 
 async function getABIByContractAddress(contractAddress){
-    return JSON.parse(await $.get("/getABI.json?contractAddress=" + contractAddress)).abi;
+    return await $.get("/getABI.json?contractAddress=" + contractAddress);
 }
 
 async function getBlockWithTransactions(blockNumber){
@@ -42,6 +42,11 @@ async function getBlockWithTransactions(blockNumber){
 async function isSmartContractAddress(address){
     return JSON.parse(await $.get("/isSmartContractAddress?address=" + address));
 }
+
+async function forkedAtBlockNumber(){
+    return JSON.parse(await $.get("/forkedAtBlockNumber"));
+}
+
 
 
 export{
@@ -55,5 +60,6 @@ export{
     getContractWithDetailsByContract,
     getABIByContractAddress,
     getBlockWithTransactions,
-    isSmartContractAddress
+    isSmartContractAddress,
+    forkedAtBlockNumber
 }

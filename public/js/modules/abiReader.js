@@ -1,10 +1,12 @@
+import * as UIHb from "../modules/UIHb.js";
+
 
 var readAbi;
 var writeAbi;
 var abi;
 var contractAddress;
 var account;
-var web3
+var web3;
 
 
 async function init(_web3, _account, _abi, _contractAddress){
@@ -21,9 +23,10 @@ async function init(_web3, _account, _abi, _contractAddress){
 
 }
 
-async function abiFuncRead(contractAddress, abi, abiFuncName, params){
+async function abiFuncRead(contractAddress, abi, abiFuncName, params, defaultBlockNumber){
     const contractInstance = new web3.eth.Contract(abi, Web3.utils.toChecksumAddress(contractAddress));
-
+    contractInstance.defaultBlock = defaultBlockNumber;
+    console.log("default block number:", contractInstance.defaultBlock);
     var result = await contractInstance.methods[abiFuncName].apply(this, params).call();
 
     console.log("result:", result);
@@ -51,7 +54,14 @@ async function abiToFuncs(abi){
         const abiElement = abi[i];
         if(abiElement.type == "function"){
             if(["nonpayable", "view", "pure"].includes(abiElement.stateMutability)){
-                readFuncs.push(abiElement);
+                var functionsToShow = $("#functionsToShow").val();
+                if(functionsToShow){
+                    if(functionsToShow.split(",").includes(abiElement.name)){
+                        readFuncs.push(abiElement);
+                    }
+                }else{
+                    readFuncs.push(abiElement);
+                }
             }
         }
     }
@@ -93,10 +103,34 @@ async function UIAbiFuncAction(contractAddress, abiWithType){
         console.log("params: ", params);
         console.log("etherValue: ", etherValue);
 
-        var result;
+        var result = [];
 
         if(abiWithType.callType == "Read"){
-            result = await abiFuncRead(contractAddress, abi, abiFuncName, params);
+            var defaultBlockNumber = $("#defaultBlockNumber").val();
+            var toBlockNumber = $("#toBlockNumber").val();
+            if(!defaultBlockNumber){
+                defaultBlockNumber = "latest";
+            }
+
+            var numberOfBlocks = 1;
+            if(toBlockNumber){
+                numberOfBlocks = parseInt(toBlockNumber) - parseInt(defaultBlockNumber) + 1;
+            }
+
+            for(var i = 0; i < numberOfBlocks; i++){
+               var _blockNumber;
+               if(defaultBlockNumber != "latest"){
+                   _blockNumber = (parseInt(defaultBlockNumber) + i).toString();
+               }else{
+                  _blockNumber = defaultBlockNumber;
+               }
+
+               result.push({
+                    blockNumber: _blockNumber,
+                    result: await abiFuncRead(contractAddress, abi, abiFuncName, params, _blockNumber)
+               });
+            }
+
         }
 
         if(abiWithType.callType == "Write"){
@@ -106,12 +140,9 @@ async function UIAbiFuncAction(contractAddress, abiWithType){
         //return values
 
         if(abiWithType.callType == "Read"){
-            $("#abiFunc" + abiIndex + " .abiFuncReturn").each(function(index){
-                if(numberOfReturns > 1){
-                  $(this).html(JSON.stringify(result[index]));
-                }else{
-                  $(this).html(JSON.stringify(result));
-                }
+            $("#abiFunc" + abiIndex + " .abiFuncReturn").each(async function(index){
+                const resultHTML = await UIHb.createAbiResultView(result);
+                $(this).html(resultHTML);
             })
         }
 
