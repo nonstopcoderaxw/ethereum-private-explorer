@@ -58,6 +58,10 @@ async function forkedAtBlockNumber(){
     return JSON.parse(await $.get("/forkedAtBlockNumber"));
 }
 
+async function findTokenAddressBySymbol(symbol){
+    return await $.get("/findTokenDetailsBySymbol?symbol=" + symbol);
+}
+
 
 
 export{
@@ -73,5 +77,6 @@ export{
     getBlockWithTransactions,
     isSmartContractAddress,
     forkedAtBlockNumber,
-    getDecodeLogs
+    getDecodeLogs,
+    findTokenAddressBySymbol
 }

@@ -1,5 +1,7 @@
 //============================lib
 var env = require("./env.js");
+const knownTokenAddresses = require("./knowntokenAddresses.js");
+const ABIMethod = require("./ABIMethod.js");
 var express = require('express');
 var app = express();
 const axios = require('axios');
@@ -10,11 +12,10 @@ const Web3 = require("web3");
 const web3ProviderURL = env.web3ProviderURL;
 const hostPort = env.hostPort;
 const abiFolder = 'abi';
+var abiERC20 = require("./abi/standard/ERC20.json");
+
 var web3;
 
-const knownProxyContractPair = {
-    "0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B": "comptrollerImplementation"
-}
 
 
 app.use(express.static('public'));
@@ -33,6 +34,15 @@ app.get('/forkedAtBlockNumber', async function (req, res) {
 
    res.setHeader('Content-Type', 'application/json');
    res.end(JSON.stringify(data["firstPrivateBlock"] - 1));
+})
+
+app.get('/findTokenDetailsBySymbol', async function (req, res){
+    const tokenSymbol = req.query.symbol;
+
+    const result = await findTokenDetailsBySymbol(tokenSymbol);
+
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(result));
 })
 
 app.get('/accountsWithDetails.json', async function (req, res) {
@@ -122,7 +132,7 @@ app.get('/getBlockWithTransactions.json', async function(req, res){
 app.get("/getABI.json", async function (req, res){
     const contractAddress = req.query.contractAddress;
     //const abiFilePath = abiFolder + "/" + contractAddress + ".JSON";
-    const abi = await findABI(contractAddress);
+    const abi = await ABIMethod.findABI(contractAddress);
 
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(abi, null, 4));
@@ -178,6 +188,27 @@ var server = app.listen(hostPort, function () {
 
 
 //==================================================================================================== apis
+async function findTokenDetailsBySymbol(symbol){
+    const result = {};
+    const address = Web3.utils.toChecksumAddress(knownTokenAddresses.knownTokenAddresses[symbol]);
+    const erc20Contract = new web3.eth.Contract(abiERC20, address);
+
+
+    try{
+        result["address"] = address;
+        result["decimals"] = await erc20Contract.methods.decimals().call();
+        result["name"] = await erc20Contract.methods.name().call();
+        result["symbol"] = symbol;
+
+        return result;
+    }catch(e){
+        result["address"] = address;
+        result["symbol"] = symbol;
+
+        return result;
+    }
+}
+
 async function getAccountsWithDetails(){
     var data = JSON.parse(await fs.promises.readFile("data.JSON", 'utf8'));
     const accounts = data["accounts"];
@@ -341,7 +372,7 @@ async function getDecodedTransaction(txnHash){
     const block = await web3.eth.getBlock(txn.blockNumber);
 
     //find abi of "to" - check local and then etherscan
-    const toAbi = await findABI(txn.to);
+    const toAbi = await ABIMethod.findABI(txn.to);
     //decode input data
     var decodedInputData;
     if(toAbi){
@@ -351,7 +382,7 @@ async function getDecodedTransaction(txnHash){
     const logs = receipt.logs;
     const abiArray = [];
     for(var i = 0; i < logs.length; i++){
-        abiArray.push(await findABI(logs[i].address));
+        abiArray.push(await ABIMethod.findABI(logs[i].address));
     }
 
     const decodedLogs = await decodeLogs(abiArray, logs);
@@ -378,62 +409,6 @@ async function init(){
 
 async function initWeb3(_web3ProviderURL){
     return new Web3(new Web3.providers.HttpProvider(_web3ProviderURL));
-}
-
-async function findABI(contractAddress){
-    const localABI = await findLocalABI(contractAddress);
-    var result;
-
-    if(localABI){
-        result = localABI;
-    }else{
-        //callout to etherscan
-        //https://api.etherscan.io/api?module=contract&action=getabi&address=0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413&apikey=
-        result = await findEtherscanABI(contractAddress);
-    }
-
-    return result;
-}
-
-async function findLocalABI(contractAddress){
-
-    const files = await fs.promises.readdir(abiFolder);
-    var result;
-
-    for(var i = 0; i < files.length; i++){
-        const abiFileName = contractAddress + '.JSON';
-        if(files.includes(abiFileName)){
-            result = JSON.parse(await fs.promises.readFile(abiFolder + '/' + abiFileName, 'utf8')).abi;
-            break;
-        }
-    }
-
-    return result;
-}
-
-async function findEtherscanABI(contractAddress){
-    try{
-        const etherscanGetAbiUrl = "https://api.etherscan.io/api?module=contract&action=getabi"
-                                  + "&address=" + contractAddress
-                                  + "&apikey=" + env.etherscanApiKey;
-        const etherscanABI = (await axios.get(etherscanGetAbiUrl)).data.result;
-
-        //adding proxy contract
-        if(knownProxyContractPair[contractAddress]){
-            //find implmentation address ///
-            const proxyContract = new web3.eth.Contract(JSON.parse(etherscanABI), contractAddress);
-            //run findEtherscanABI again
-            const implmentationContract = await proxyContract.methods[knownProxyContractPair[contractAddress]].apply(this, null).call();
-            console.log("findEtherscanABI implmentationContract", implmentationContract);
-            return findEtherscanABI(implmentationContract);
-        }
-
-        return JSON.parse(etherscanABI);
-    }catch(e){
-        console.log("findEtherscanABI error: ", e);
-        console.log("ABI not found - error in findEtherscanABI - contractAddress: ", contractAddress);
-        return null;
-    }
 }
 
 //TBB

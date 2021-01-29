@@ -3,6 +3,7 @@ const interval = process.argv[2];//0;
 const reset = process.argv[3];//true;
 //============================lib
 const fs = require('fs');
+const ABIMethod = require("./ABIMethod.js");
 const AbiDecoder = require('abi-decoder');
 const InputDataDecoder = require("ethereum-input-data-decoder");
 //==============================web3
@@ -160,10 +161,17 @@ async function scanTxn(){
                       //@check if the block is private
                       if(!accounts.includes(txn.from)){throw new Error("Please restart the block explorer!");}
                       //@ERC20 List
-                      const tokenDetails = await getERC20ListByTxn(txn);
-                      if(tokenDetails){
-                          erc20TokenAddressesMap.set(Web3.utils.toChecksumAddress(tokenDetails.account), tokenDetails);
+                      const tokenDetailsList = await getERC20ListByTxn(txn);
+                      if(tokenDetailsList.length > 0){
+                          for(var _i = 0; _i < tokenDetailsList.length; _i++){
+                              const tokenDetails = tokenDetailsList[_i];
+
+                              erc20TokenAddressesMap.set(Web3.utils.toChecksumAddress(tokenDetails.account) +
+                                                         Web3.utils.toChecksumAddress(tokenDetails.tokenAddress),
+                                                         tokenDetails);
+                          }
                       }
+
                       //@Contracts and their details including ERC20s list for each contract
                       if(!txn.to){
                             const contractWithDetails = await getContractsByTxnReceipt(txnReceipt, scanningBlock, theBlock.timestamp, txn.from);
@@ -189,14 +197,21 @@ async function scanTxn(){
           // to be reviewed END
       }
 
+
       //commit changes
       data["accounts"] = accounts;
       data["contracts"] = Array.from(contractsMap.values());
       data["balances"] = balances;
-      data["erc20TokenList"] = Array.from(erc20TokenAddressesMap.values());
       data["lastScannedBlock"] = lastScannedBlock;
       data["transactionWithReceiptList"] = transactionWithReceiptList;
       data["blocks"] = blocks;
+
+      data["erc20TokenList"] = Array.from(erc20TokenAddressesMap.values());
+      //refresh the balance of each ERC20
+      data["erc20TokenList"] = await refreshBalance(data["erc20TokenList"]);
+
+
+
       const existingData = await readFile("data.JSON");
 
       if(JSON.stringify(data) != existingData){
@@ -214,7 +229,9 @@ async function getErc20TokenAddressesMap(){
       var erc20TokenAddressesMap = new Map();
       if(data["erc20TokenList"].length > 0){
           for(var i = 0; i < data["erc20TokenList"].length; i++){
-              erc20TokenAddressesMap.set(Web3.utils.toChecksumAddress(data["erc20TokenList"][i].account), data["erc20TokenList"][i]);
+              erc20TokenAddressesMap.set(Web3.utils.toChecksumAddress(data["erc20TokenList"][i].account) +
+                                         Web3.utils.toChecksumAddress(data["erc20TokenList"][i].tokenAddress),
+                                         data["erc20TokenList"][i]);
           }
       }
 
@@ -245,25 +262,27 @@ async function getContractAddressListFromMap(contractsMap){
 }
 
 async function getERC20ListByTxn(txn){
+      const result = [];
 
       var txnReceipt = await web3.eth.getTransactionReceipt(txn.hash);
       const logs = txnReceipt.logs;
       //check if txn.from is beyond the node accounts, throw an error
       if(logs.length > 0){
+          //retrieve all ERC20 ABIs - Transfer event can have some difference in ABI
           AbiDecoder.addABI(abiERC20);
+
           var decodedLogs = AbiDecoder.decodeLogs(txnReceipt.logs);
 
           for(var x = 0; x < decodedLogs.length; x++){
               if(decodedLogs[x] && decodedLogs[x].name == "Transfer"){
-
                   const tokenAddress = decodedLogs[x].address;
                   const from = decodedLogs[x].events[0].value;
                   const to = decodedLogs[x].events[1].value;
                   const erc20Contract = new web3.eth.Contract(abiERC20, tokenAddress);
+                  const decimals = await erc20Contract.methods.decimals().call();
                   const erc20Balance = await erc20Contract.methods.balanceOf(to).call();
                   const name = await erc20Contract.methods.name().call();
                   const symbol = await erc20Contract.methods.symbol().call();
-                  const decimals = await erc20Contract.methods.decimals().call();
 
                   if(erc20Balance != 0){
                       const erc20TokenListElement = Object.assign({}, erc20TokenListElementObj);
@@ -272,13 +291,27 @@ async function getERC20ListByTxn(txn){
                       erc20TokenListElement["name"] = name;
                       erc20TokenListElement["symbol"] = symbol;
                       erc20TokenListElement["decimals"] = decimals;
-                      erc20TokenListElement["balance"] = erc20Balance;
+                      erc20TokenListElement["balance"] = (erc20Balance / 10**decimals).toFixed(2);
 
-                      return erc20TokenListElement;
+                      result.push(erc20TokenListElement);
                   }
               }
           }
       }
+
+      return result;
+}
+
+async function refreshBalance(erc20TokenList){
+    for(var i = 0; i < erc20TokenList.length; i++){
+        const erc20Contract = new web3.eth.Contract(abiERC20, erc20TokenList[i].tokenAddress);
+        const decimals = await erc20Contract.methods.decimals().call();
+        const erc20Balance = await erc20Contract.methods.balanceOf(erc20TokenList[i].account).call();
+
+        erc20TokenList["erc20Balance"] = erc20Balance;
+    }
+
+    return erc20TokenList;
 }
 
 async function getContractsByTxnReceipt(txnReceipt, blockNumber, timestamp, from){
