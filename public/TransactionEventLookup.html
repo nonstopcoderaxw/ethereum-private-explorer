@@ -18,11 +18,6 @@
 </head>
 
 <body>
-  <!--
-  <div class="loader">
-    <div class="page-loader"></div>
-  </div>
-  -->
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary mb-4">
     <a href="/"><img src="./images/jing.fm-pink-floyd-clipart-2220126.png" alt="Example Navbar 1" class="mr-2" height="30"></a>
@@ -42,16 +37,7 @@
 
 
 
-  <!-- abi reader -->
-  <div id="abiReader" class="container mb-2" style="padding-bottom: 1px; max-width: 100%">
-      <div class="example col-md-12 ml-auto mr-auto" id="connectToMetaMask">
-        <div class="row">
-          <div style="width:100%; margin-right: 15px; margin-left: 15px;">
-            <p class="cFloateRight"><button type="button" class="btn btn-secondary aConnectWeb3">Connect to MetaMask</button></p>
-          </div>
-        </div>
-      </div>
-
+  <div id="eventLookup" class="container mb-2" style="padding-bottom: 1px; max-width: 100%">
         <div class="example col-md-12 ml-auto mr-auto">
           <div class="row">
             <div class="col-lg-5 col-md-6 col-sm-12 mb-4">
@@ -60,20 +46,28 @@
                   <p class="card-title">Contract Address and ABI</p>
                   <div class="row">
                     <div class="col-md-12 mb-3 cV2">
-                      <label>Archieved Node Provider</label>
+                      <label>Node Provider</label>
                       <input id="archievedNodeProvider" type="text" class="form-control" placeholder="WebsocketProvider"></input>
                     </div>
-                    <div class="col-md-12 mb-3">
-                      <label>Functions to show(Optional)</label>
-                      <input id="functionsToShow" type="text" class="form-control" placeholder="price,postPrice"></input>
+                    <div class="col-md-12 mb-3 cV2">
+                      <label>Event Name</label>
+                      <input id="eventName" type="text" class="form-control"></input>
                     </div>
-                    <div class="col-md-12 mb-3">
-                      <label>Proxy Contract Address</label>
-                      <input id="ProxyContractAddress" type="text" class="form-control" placeholder="0x..."></input>
+                    <div class="col-md-12 mb-3 cV2">
+                      <label>Event Details Filter</label>
+                      <input id="eventDetailsFilter" type="text" class="form-control" placeholder="name1=value1;name2=value2"></input>
                     </div>
-                    <div class="col-md-12 mb-3">
-                      <label>Implementation Contract Address</label>
-                      <input id="ImplmentationContractAddress" type="text" class="form-control" placeholder="0x..."></input>
+                    <div class="col-md-12 mb-3 cV2">
+                      <label>From Block Number</label>
+                      <input id="fromBlockNumber" type="text" class="form-control"></input>
+                    </div>
+                    <div class="col-md-12 mb-3 cV2">
+                      <label>To Block Number</label>
+                      <input id="toBlockNumber" type="text" class="form-control"></input>
+                    </div>
+                    <div class="col-md-12 mb-3 cV2">
+                      <label>From Contract Address</label>
+                      <input id="contractAddress" type="text" class="form-control" placeholder="0x..."></input>
                     </div>
                     <div class="col-md-12 mb-3">
                       <label>ABI</label>
@@ -87,7 +81,7 @@
 
             <div class="col-lg-1 col-md-6 col-sm-12 mb-4">
               <div class="card cABIActionPosition">
-                  <button type="button" class="btn btn-info cABIAction" id="generateAction">Generate</button>
+                  <button type="button" class="btn btn-info cABIAction" id="searchAction">Search</button>
               </div>
             </div>
 
@@ -96,43 +90,17 @@
                 <div class="card-body">
 
                   <div class="row">
-                    <div class="col-md-3 mb-3">
-                      <p class="card-title">Contract Functions</p>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                      <fieldset>
-                        <div class="custom-control custom-radio d-block noMargin">
-                          <input type="radio" id="abiReadFuncRadio" name="customRadio" class="custom-control-input abiRadio" checked="">
-                          <label class="custom-control-label" for="abiReadFuncRadio">Read</label>
-                        </div>
-                      </fieldset>
-                    </div>
-                    <div class="col-md-3 mb-3 cV1">
-                      <fieldset>
-                        <div class="custom-control custom-radio d-block noMargin">
-                          <input type="radio" id="abiWriteFuncRadio" name="customRadio" class="custom-control-input abiRadio">
-                          <label class="custom-control-label" for="abiWriteFuncRadio">Write</label>
-                        </div>
-                      </fieldset>
-                    </div>
+                      <div id="transactionEventLookupResult">
+
+                      </div>
+
                   </div>
-                  <div class="col-md-12 mb-3 cV2">
-                    <label>Default Block Number</label>
-                    <input id="defaultBlockNumber" type="text" class="form-control" placeholder=""></input>
-                  </div>
-                  <div class="col-md-12 mb-3 cV2">
-                    <label>To Block Number</label>
-                    <input id="toBlockNumber" type="text" class="form-control" placeholder=""></input>
-                  </div>
-                  <div class="row" id="abiFunc"></div>
+
 
 
                 </div>
               </div>
             </div>
-
-
-
 
           </div>
         </div>
@@ -153,7 +121,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
 
 
-  <script type="module" src="js/pageJS/abiReader.js"></script>
+  <script type="module" src="js/pageJS/TransactionEventLookup.js"></script>
 </body>
 
 </html>

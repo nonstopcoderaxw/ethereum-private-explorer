@@ -19,6 +19,17 @@ async function getDecodedTransaction(txnHash){
     return await $.get("/decodedTransaction.json?txnHash=" + txnHash);
 }
 
+async function getDecodeLogs(abiArray, logs){
+
+    return await $.ajax({
+                    url:"/decodeLogs",
+                    type:"POST",
+                    data: JSON.stringify({abiArray: abiArray, logs: logs}),
+                    contentType:"application/json; charset=utf-8",
+                    dataType:"json"
+                });
+}
+
 async function getAccountWithDetailsByAccount(account){
     return await $.get("/getAccountWithDetailsByAccount.json?account=" + account);
 }
@@ -61,5 +72,6 @@ export{
     getABIByContractAddress,
     getBlockWithTransactions,
     isSmartContractAddress,
-    forkedAtBlockNumber
+    forkedAtBlockNumber,
+    getDecodeLogs
 }

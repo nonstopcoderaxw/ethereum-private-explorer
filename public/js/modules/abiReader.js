@@ -70,7 +70,14 @@ async function abiToFuncs(abi){
         const abiElement = abi[i];
         if(abiElement.type == "function"){
             if(["nonpayable", "payable"].includes(abiElement.stateMutability)){
-                writeFuncs.push(abiElement);
+                var functionsToShow = $("#functionsToShow").val();
+                if(functionsToShow){
+                    if(functionsToShow.split(",").includes(abiElement.name)){
+                        writeFuncs.push(abiElement);
+                    }
+                }else{
+                    writeFuncs.push(abiElement);
+                }
             }
         }
     }
@@ -87,12 +94,19 @@ async function UIAbiFuncAction(contractAddress, abiWithType){
         const abiIndex = e.target.attributes.data.value;
         const abiElement = abi[abiIndex];
         const abiFuncName = abiElement.name;
+        const abiFuncInputs = abiElement.inputs;
         const numberOfReturns = abiElement.outputs.length;
 
         const params = [];
         var etherValue;
         $("#abiFunc" + abiIndex + " .abiFuncInputValue").each(function(index){
-            params.push($(this).val());
+            //array input type
+            if(abiFuncInputs[index].type.includes("[]")){
+                params.push(JSON.parse($(this).val()));
+            }else{
+                params.push($(this).val());
+            }
+
         })
 
         $("#abiFunc" + abiIndex + " .abiFuncInputEtherValue").each(function(){
@@ -148,7 +162,11 @@ async function UIAbiFuncAction(contractAddress, abiWithType){
 
         if(abiWithType.callType == "Write"){
             $("#abiFunc" + abiIndex + " .abiFuncReturn").each(function(index){
-                $(this).html(result.transactionHash);
+                var html = "<a target='_blank' href='/transaction.html#" + result.transactionHash + "' >"
+                            + result.transactionHash
+                            + "</a>";
+
+                $(this).html(html);
             })
         }
 

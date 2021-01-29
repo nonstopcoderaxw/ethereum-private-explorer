@@ -56,7 +56,7 @@ async function setDefaultUIValues(){
 }
 
 async function popEtherScanABI(){
-    $("#contractAddress").change(async function(){
+    $("#ImplmentationContractAddress").change(async function(){
         const contractAddress = $(this).val();
 
         const abiResp = await APICallouts.getABIByContractAddress(contractAddress);
@@ -79,7 +79,7 @@ async function UIGenerate(){
           }
 
           const abi = JSON.parse($("#contractAbi").val());
-          const contractAddress = $("#contractAddress").val();
+          const contractAddress = $("#ProxyContractAddress").val();
 
           await ABIReader.init(web3, account, abi, contractAddress);
       });

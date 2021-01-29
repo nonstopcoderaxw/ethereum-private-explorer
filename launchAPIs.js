@@ -12,6 +12,11 @@ const hostPort = env.hostPort;
 const abiFolder = 'abi';
 var web3;
 
+const knownProxyContractPair = {
+    "0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B": "comptrollerImplementation"
+}
+
+
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -57,6 +62,17 @@ app.get('/decodedTransaction.json', async function(req, res){
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(decodedTransaction, null, 4));
       //res.end(JSON.stringify(mokTest, null, 4));
+})
+
+app.post('/decodeLogs', async function(req, res){
+
+      const abiArray = req.body.abiArray;
+      const logs = req.body.logs;
+
+      const decodedLogs = await decodeLogsV2(abiArray, logs);
+
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(decodedLogs, null, 4));
 })
 
 app.get('/blocks.json', async function(req, res){
@@ -401,8 +417,20 @@ async function findEtherscanABI(contractAddress){
                                   + "&address=" + contractAddress
                                   + "&apikey=" + env.etherscanApiKey;
         const etherscanABI = (await axios.get(etherscanGetAbiUrl)).data.result;
+
+        //adding proxy contract
+        if(knownProxyContractPair[contractAddress]){
+            //find implmentation address ///
+            const proxyContract = new web3.eth.Contract(JSON.parse(etherscanABI), contractAddress);
+            //run findEtherscanABI again
+            const implmentationContract = await proxyContract.methods[knownProxyContractPair[contractAddress]].apply(this, null).call();
+            console.log("findEtherscanABI implmentationContract", implmentationContract);
+            return findEtherscanABI(implmentationContract);
+        }
+
         return JSON.parse(etherscanABI);
     }catch(e){
+        console.log("findEtherscanABI error: ", e);
         console.log("ABI not found - error in findEtherscanABI - contractAddress: ", contractAddress);
         return null;
     }
@@ -497,12 +525,30 @@ async function decodeInputData(input, abi){
     return decodedInputData;
 }
 
+// with original logs as output
+async function decodeLogsV2(abiArray, logs){
+    const decodedLogs = await decodeLogs(abiArray, logs);
+
+    for(var i = 0; i < decodedLogs.length; i++){
+        decodedLogs[i].logsInput = logs[i];
+    }
+
+    return decodedLogs;
+}
+
 async function decodeLogs(abiArray, logs){
+
+  console.log("decodeLogs abiArray.length", abiArray.length);
+
+
     for(var i = 0; i < abiArray.length; i++){
         AbiDecoder.addABI(abiArray[i]);
     }
+    console.log("decodeLogs logs var", logs);
 
     const result = AbiDecoder.decodeLogs(logs);
+
+    console.log("decodeLogs result var", result);
 
     for(var i = 0; i < result.length; i++){
         if(!result[i]){

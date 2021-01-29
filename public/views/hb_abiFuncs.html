@@ -23,12 +23,12 @@
             <input type="text" class="form-control abiFuncInputValue" placeholder="{{name}}({{type}})" value="" required="">
           </div>
           {{/each}}
-          {{#if payable}}
+          {{#ifEquals stateMutability "payable"}} 
           <div class="col-md-12 mb-3">
             <label>Ether value</label>
             <input type="text" class="form-control abiFuncInputEtherValue" placeholder="0.01" value="" required="">
           </div>
-          {{/if}}
+          {{/ifEquals}}
         </div>
 
 
