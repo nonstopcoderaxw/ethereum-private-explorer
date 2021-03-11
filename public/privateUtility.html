@@ -1,0 +1,155 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Private Ethereum Block Explorer</title>
+  <meta name="description" content="Private Ethereum Block Explorer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/shards.css?v=3.0.0">
+  <link rel="stylesheet" href="css/cCss.css">
+  <link rel="icon" href="./images/jing.fm-pink-floyd-clipart-2220126.png">
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+
+</head>
+
+<body>
+   <div class="loader">
+     <div class="page-loader"></div>
+   </div>
+
+  <div id="tNav"></div>
+
+
+  <div class="col-lg-5 col-md-12 col-sm-12 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title">ERC20 Addresses</p>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Token Symbol</label>
+            <input id="tokenSymbol" type="text" class="form-control" placeholder="cDAI"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3" id="tokenDetailsSearchResult">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5 col-md-12 col-sm-12 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title">Faucet</p>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Token</label>
+            <input id="faucetTokenSymbol" type="text" class="form-control" placeholder="DAI"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Amount</label>
+            <input id="faucetAmount" type="text" class="form-control" placeholder="1000000000000000000"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Account to Receive</label>
+            <input id="faucetAccountToReceive" type="text" class="form-control" value=""></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <button type="button" class="btn btn-info" id="faucetSubmit">Submit</button>
+            <sub id="faucetResult"></sub>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5 col-md-12 col-sm-12 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title">Math</p>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Number with mantissa(actual number)</label>
+            <input id="actualNumber" type="text" class="form-control" placeholder="2.48957367"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Mantissa</label>
+            <input id="mantissa" type="text" class="form-control" placeholder="6"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Solidity Number(local string)</label>
+            <input id="solidityNumber1" type="text" class="form-control" placeholder="248957367"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label>Solidity Number(e+n format)</label>
+            <input id="solidityNumber2" type="text" class="form-control" placeholder="2e+10"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <button type="button" class="btn btn-info" id="mathEnter">Enter</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5 col-md-12 col-sm-12 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title">Contract Addresses</p>
+
+        <div class="row">
+          <div class="col-md-12 mb-3" id="contractDetailsSearchResult">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5 col-md-12 col-sm-12 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title">Utility Links</p>
+
+        <div class="row">
+          <div class="col-md-12 mb-3" id="UtilityLinks">
+              <a target="_blank" href="https://blockbytime.com/">https://blockbytime.com/</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+
+  <script type="module" src="js/pageJS/privateUtility.js"></script>
+
+</body>
+
+</html>

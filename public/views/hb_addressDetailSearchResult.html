@@ -1,0 +1,21 @@
+<table class="table table-striped table-responsive-md">
+  <thead>
+    <tr>
+      <th>Contract Name</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each this}}
+    <tr>
+      <td>
+        <span class="nav-link noPaddingLeft">{{ContractName}}</span>
+      </td>
+      <td>
+        <span class="nav-link noPaddingLeft">{{#if IsProxy}}P:{{/if}} {{Address}}</span><br/>
+        <span class="nav-link noPaddingLeft">{{#if IsProxy}}I:{{/if}} {{ImplementationAddress}}</span>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

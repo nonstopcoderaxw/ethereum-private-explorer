@@ -23,7 +23,7 @@ async function init(_web3, _account, _abi, _contractAddress){
 
 }
 
-async function abiFuncRead(contractAddress, abi, abiFuncName, params, defaultBlockNumber){
+async function abiFuncRead(abi, abiFuncName, params, defaultBlockNumber){
     const contractInstance = new web3.eth.Contract(abi, Web3.utils.toChecksumAddress(contractAddress));
     contractInstance.defaultBlock = defaultBlockNumber;
     console.log("default block number:", contractInstance.defaultBlock);
@@ -86,7 +86,7 @@ async function abiToFuncs(abi){
 }
 
 //==============UI Funcs=====================
-async function UIAbiFuncAction(contractAddress, abiWithType){
+async function UIAbiFuncAction(abiWithType){
 
     const abi = abiWithType.abi;
 
@@ -141,14 +141,14 @@ async function UIAbiFuncAction(contractAddress, abiWithType){
 
                result.push({
                     blockNumber: _blockNumber,
-                    result: await abiFuncRead(contractAddress, abi, abiFuncName, params, _blockNumber)
+                    result: await abiFuncRead(abi, abiFuncName, params, _blockNumber)
                });
             }
 
         }
 
         if(abiWithType.callType == "Write"){
-            result = await abiFuncWrite(contractAddress, abi, abiFuncName, params, etherValue);
+            result = await abiFuncWrite(abi, abiFuncName, params, etherValue);
         }
 
         //return values
@@ -174,7 +174,7 @@ async function UIAbiFuncAction(contractAddress, abiWithType){
     })
 }
 
-async function abiFuncWrite(contractAddress, abi, abiFuncName, params, value){
+async function abiFuncWrite(abi, abiFuncName, params, value){
       const contractInstance = new web3.eth.Contract(abi, Web3.utils.toChecksumAddress(contractAddress));
 
       var valueObj = {from:account}
@@ -199,18 +199,22 @@ async function UIToggleReadWriteFuncs(){
 async function _UIToggleReadWriteFuncs(){
   if($("#abiReadFuncRadio").prop("checked")){
       await createFuncs(readAbi);
-      await UIAbiFuncAction(contractAddress, readAbi);
+      await UIAbiFuncAction(readAbi);
   }
 
   if($("#abiWriteFuncRadio").prop("checked")){
       await createFuncs(writeAbi);
-      await UIAbiFuncAction(contractAddress, writeAbi);
+      await UIAbiFuncAction(writeAbi);
   }
 }
 
 async function createFuncs(data){
     var html = await createHBhtml(data, "./views/hb_abiFuncs.html");
     $("#abiFunc").html(html);
+}
+
+async function changeContractAddress(_contractAddress){
+    contractAddress = _contractAddress;
 }
 
 
@@ -230,5 +234,6 @@ export{
      abi,
      contractAddress,
      init,
-     UIToggleReadWriteFuncs
+     UIToggleReadWriteFuncs,
+     changeContractAddress
 }

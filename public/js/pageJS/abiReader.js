@@ -18,6 +18,7 @@ if(version == "1"){
 }
 
 if(version == "2"){
+    web3 = new Web3(window.ethereum);
     startV2();
 }
 
@@ -42,9 +43,12 @@ async function UIV1(){
 }
 
 async function UIV2(){
-    $("#connectToMetaMask").hide();
+    $("#connectToMetaMask").show();
     $(".cV1").hide();
     $(".cV2").show();
+    await UIConnectToMetaMask();
+
+
 }
 
 async function UISetTitle(title){
@@ -96,7 +100,6 @@ async function UIConnectToMetaMask(){
           alert("The connected account does not belong to the private testnet. Please ensure the MetaMask network is set to the Private Testnet not the Main Net!");
           return false;
       }
-
       if(account){
           await UIMetaMaskConnected();
           return true;

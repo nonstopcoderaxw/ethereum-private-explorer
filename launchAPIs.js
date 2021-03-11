@@ -1,7 +1,8 @@
 //============================lib
 var env = require("./env.js");
-const knownTokenAddresses = require("./knowntokenAddresses.js");
+const knownAddresses = require("./knownAddresses.js");
 const ABIMethod = require("./ABIMethod.js");
+const UniswapMethods = require("./UniswapMethods.js");
 var express = require('express');
 var app = express();
 const axios = require('axios');
@@ -27,6 +28,17 @@ app.get('/', function (req, res) {
    res.sendFile(__dirname + "/public/" + "index.html");
 })
 
+app.get('/receiveTokenByETH', async function (req, res) {
+   const recipientAddress = Web3.utils.toChecksumAddress(req.query.recipientAddress);
+   const tokenSymbol = req.query.tokenSymbol;
+   const tokenAddress = Web3.utils.toChecksumAddress(req.query.tokenAddress);
+   const amount = req.query.amount;
+
+   const result = await UniswapMethods.receiveTokenByETH(recipientAddress, tokenSymbol, tokenAddress, amount);
+   res.setHeader('Content-Type', 'application/json');
+   res.end(JSON.stringify(result));
+})
+
 app.get('/forkedAtBlockNumber', async function (req, res) {
 
 
@@ -43,6 +55,13 @@ app.get('/findTokenDetailsBySymbol', async function (req, res){
 
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result));
+})
+
+app.get('/findAllContractAddresses', async function (req, res){
+    const result = await ABIMethod.findAllContractAddresses();
+
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(result, null, 4));
 })
 
 app.get('/accountsWithDetails.json', async function (req, res) {
@@ -190,7 +209,7 @@ var server = app.listen(hostPort, function () {
 //==================================================================================================== apis
 async function findTokenDetailsBySymbol(symbol){
     const result = {};
-    const address = Web3.utils.toChecksumAddress(knownTokenAddresses.knownTokenAddresses[symbol]);
+    const address = Web3.utils.toChecksumAddress(knownAddresses.knownTokenAddresses[symbol]);
     const erc20Contract = new web3.eth.Contract(abiERC20, address);
 
 
@@ -208,6 +227,7 @@ async function findTokenDetailsBySymbol(symbol){
         return result;
     }
 }
+
 
 async function getAccountsWithDetails(){
     var data = JSON.parse(await fs.promises.readFile("data.JSON", 'utf8'));
@@ -245,7 +265,7 @@ async function getAccountWithDetailsByAccount(account){
 }
 
 async function getContractWithDetailsByContract(contractAddress){
-  var contractsWithDetails = await getContractsWithDetails(); ///
+  var contractsWithDetails = await getContractsWithDetails();
   for(var i = 0; i < contractsWithDetails.length; i++){
       if(contractsWithDetails[i].contractAddress == contractAddress){
           return [contractsWithDetails[i]];

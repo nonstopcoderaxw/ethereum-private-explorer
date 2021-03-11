@@ -2,14 +2,14 @@ var env = require("./env.js");
 const axios = require('axios');
 const Web3 = require("web3");
 const fs = require('fs');
-const knowntokenAddresses = require("./knowntokenAddresses");
+const knownAddresses = require("./knownAddresses");
 const web3ProviderURL = env.web3ProviderURL;
 const abiFolder = 'abi';
 var web3;
 
 init();
 
-const knownProxyContractPair = knowntokenAddresses.knownProxyContractPair;
+const knownProxyContractPair = knownAddresses.knownProxyContractPair;
 
 async function init(){
     web3 = await initWeb3(web3ProviderURL);
@@ -57,14 +57,20 @@ async function findEtherscanABI(contractAddress){
                                   + "&apikey=" + env.etherscanApiKey;
         const etherscanABI = (await axios.get(etherscanGetAbiUrl)).data.result;
 
-        //adding proxy contract
         if(knownProxyContractPair[contractAddress]){
-            //find implmentation address ///
-            const proxyContract = new web3.eth.Contract(JSON.parse(etherscanABI), contractAddress);
-            //run findEtherscanABI again
-            const implmentationContract = await proxyContract.methods[knownProxyContractPair[contractAddress]].apply(this, null).call();
-            console.log("findEtherscanABI implmentationContract", implmentationContract);
-            return findEtherscanABI(implmentationContract);
+            if(knownProxyContractPair[contractAddress].includes("0x")){
+                const proxyContract = new web3.eth.Contract(JSON.parse(etherscanABI), contractAddress);
+                //run findEtherscanABI again
+                const implmentationContract = knownProxyContractPair[contractAddress];
+                console.log("findEtherscanABI implmentationContract", implmentationContract);
+                return findEtherscanABI(implmentationContract);
+            }else{
+                const proxyContract = new web3.eth.Contract(JSON.parse(etherscanABI), contractAddress);
+                //run findEtherscanABI again
+                const implmentationContract = await proxyContract.methods[knownProxyContractPair[contractAddress]].apply(this, null).call();
+                console.log("findEtherscanABI implmentationContract", implmentationContract);
+                return findEtherscanABI(implmentationContract);
+            }
         }
 
         return JSON.parse(etherscanABI);
@@ -76,6 +82,21 @@ async function findEtherscanABI(contractAddress){
     }
 }
 
+async function findAllContractAddresses(){
+    //const knownProxyContractPair = knowntokenAddresses.knownProxyContractPair;
+    const knownContracts = knownAddresses.knownContracts;
+
+    for(var i = 0; i < knownContracts.length; i++){
+        const contractAddress = knownContracts[i].Address
+        if(knownContracts[i].IsProxy){
+            knownContracts[i].ImplementationAddress = knownAddresses.knownProxyContractPair[knownContracts[i].Address];
+        }
+    }
+
+    return knownContracts;
+}
+
+
 module.exports ={
-    findABI, knownProxyContractPair
+    findABI, knownProxyContractPair, findAllContractAddresses
 }

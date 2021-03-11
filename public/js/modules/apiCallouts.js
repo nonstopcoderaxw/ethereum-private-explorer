@@ -3,6 +3,10 @@ async function getAccountsWithDetails(){
     return await $.get("/accountsWithDetails.json");
 }
 
+async function findAllContractAddresses(){
+    return await $.get("/findAllContractAddresses");
+}
+
 async function getContractsWithDetails(){
     return await $.get("/contractsWithDetails.json");
 }
@@ -62,6 +66,16 @@ async function findTokenAddressBySymbol(symbol){
     return await $.get("/findTokenDetailsBySymbol?symbol=" + symbol);
 }
 
+async function receiveTokenByETH(recipientAddress, tokenSymbol, tokenAddress, amount){
+    return await $.get("/receiveTokenByETH?recipientAddress="
+                                                            + recipientAddress
+                                                            + "&tokenSymbol="
+                                                            + tokenSymbol
+                                                            + "&tokenAddress"
+                                                            + tokenAddress
+                                                            + "&amount=" + amount);
+}
+
 
 
 export{
@@ -78,5 +92,7 @@ export{
     isSmartContractAddress,
     forkedAtBlockNumber,
     getDecodeLogs,
-    findTokenAddressBySymbol
+    findTokenAddressBySymbol,
+    findAllContractAddresses,
+    receiveTokenByETH
 }

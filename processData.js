@@ -136,6 +136,8 @@ async function scanTxn(){
 
     //others
     var allAddresses = [];
+    console.log("lastScannedBlock", lastScannedBlock);
+    console.log("currentBlock", currentBlock);
     while(lastScannedBlock != currentBlock){
         scanningBlock = lastScannedBlock + 1;
 
@@ -192,11 +194,17 @@ async function scanTxn(){
 
                 }
                 lastScannedBlock = scanningBlock;
+
+                data["erc20TokenList"] = Array.from(erc20TokenAddressesMap.values());
+                //refresh the balance of each ERC20
+                data["erc20TokenList"] = await refreshBalance(data["erc20TokenList"]);
+
                 break;
+
           }
           // to be reviewed END
-      }
 
+      }
 
       //commit changes
       data["accounts"] = accounts;
@@ -206,9 +214,7 @@ async function scanTxn(){
       data["transactionWithReceiptList"] = transactionWithReceiptList;
       data["blocks"] = blocks;
 
-      data["erc20TokenList"] = Array.from(erc20TokenAddressesMap.values());
-      //refresh the balance of each ERC20
-      data["erc20TokenList"] = await refreshBalance(data["erc20TokenList"]);
+
 
 
 

@@ -143,6 +143,13 @@ async function UITabTwoInit(){
      }
 }
 
+async function UIChangeContractAddress(){
+      window.onhashchange = async function(){
+          contractAddress = window.location.hash.split("#")[1];
+          await ABIReader.changeContractAddress(contractAddress);
+      }
+}
+
 async function findGetParameter(parameterName) {
     var result = null,
         tmp = [];
@@ -163,5 +170,6 @@ async function UIOps(){
      await UIIsProxy();
      await UIChangeABI();
      await UIDefaultTab();
+     await UIChangeContractAddress();
 
 }
