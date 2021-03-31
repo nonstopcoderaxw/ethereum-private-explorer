@@ -1,6 +1,6 @@
 //============================vars
-const interval = process.argv[2];//0;
-const reset = process.argv[3];//true;
+var interval = process.argv[2];//0;
+var reset = process.argv[3];//true;
 //============================lib
 const fs = require('fs');
 const ABIMethod = require("./ABIMethod.js");
@@ -89,8 +89,14 @@ const blockElementObj = {
 
 
 //==================================================================================================== web3
-
 main();
+
+process.on('unhandledRejection', function(e){
+    console.log("Restarting...");
+    interval = 0;
+    reset = "true";
+    main();
+})
 
 async function main(){
     await init();
@@ -226,6 +232,9 @@ async function scanTxn(){
               console.log("data: ", data);
               console.log("data updated to the block - " + data["lastScannedBlock"]);
           }
+      }else{
+          interval = 2000;
+          reset = "false";
       }
 
       setTimeout(scanTxn, interval);

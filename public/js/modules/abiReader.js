@@ -103,6 +103,12 @@ async function UIAbiFuncAction(abiWithType){
             //array input type
             if(abiFuncInputs[index].type.includes("[]")){
                 params.push(JSON.parse($(this).val()));
+            }else if(abiFuncInputs[index].type == "bool"){
+                if($(this).val() == 'true'){
+                    params.push(true);
+                }else{
+                    params.push(false);
+                }
             }else{
                 params.push($(this).val());
             }

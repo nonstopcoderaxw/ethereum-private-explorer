@@ -6,6 +6,7 @@ const knownTokenAddresses = {
     "cDAI": "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
     "cETH": "0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5",
     "cUSDC": "0x39aa39c021dfbae8fac545936693ac917d5e7563",
+    "cUSDT": "0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9",
     "cREP": "0x158079ee67fce2f58472a96584a73c7ab9ac95c1",
     "cSAI": "0xf5dce57282a584d2746faf1593d3121fcac444dc",
     "cUNI": "0x35a18000230da775cac24873d00ff85bccded550",
@@ -15,7 +16,9 @@ const knownTokenAddresses = {
     "DAI": "0x6b175474e89094c44da98b954eedeac495271d0f",
     "BAT": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
     "USDC": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "USDT": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     "WETH": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "WBTC": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
     "aDAI": "0x028171bCA77440897B824Ca71D1c56caC55b68A3"
   }
 
